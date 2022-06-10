@@ -2,6 +2,8 @@ import json
 import sys
 from typing import Any
 
+from wkflws.logging import getLogger
+
 
 async def process_push(data: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
     """Process push events from Github.
@@ -10,6 +12,9 @@ async def process_push(data: dict[str, Any], context: dict[str, Any]) -> dict[st
         data: The push event from Github.
         context: Contextual information about the workflow being executed.
     """
+    logger = getLogger("wkflws_github.push")
+    logger.setLevel(10)
+    logger.info("Processing Github push event...")
     return data
 
 

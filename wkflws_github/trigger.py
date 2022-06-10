@@ -8,7 +8,8 @@ from wkflws.triggers.webhook import WebhookTrigger
 
 from . import __identifier__, __version__
 
-logger = getLogger(__identifier__)
+logger = getLogger("wkflws_github.trigger")
+logger.setLevel(10)
 
 
 async def process_webhook_request(request: Request) -> Optional[Event]:
@@ -21,6 +22,8 @@ async def process_webhook_request(request: Request) -> Optional[Event]:
     #    be as simple as json.loads(request.body), but if you are given something else
     #    (such as XML) more care will need to be taken.
     data = json.loads(request.body)
+
+    logger.info(f"Received Github webhook request {identifier}")
 
     # 3. Finally return the Event with as little modification to the data as possible.
     return Event(identifier, request.headers, data)
@@ -35,6 +38,8 @@ async def accept_event(event: Event) -> tuple[Optional[str], dict[str, Any]]:
     data["x-github-event"] = event.metadata["x-github-event"]
 
     event_type = event.metadata["x-github-event"]
+
+    logger.info(f"Processing Github webhook as '{event_type}' event")
     match event_type:
         case "ping":
             # Github sends a no-op ping request when subscribing to webhooks.
