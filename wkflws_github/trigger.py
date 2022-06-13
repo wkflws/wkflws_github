@@ -51,7 +51,7 @@ async def accept_event(event: Event) -> tuple[Optional[str], dict[str, Any]]:
         case _:
             logger.error(
                 f"Received unsupported github event type '{event_type}' "
-                f"(id:{event.identifier}"
+                f"(id:{event.identifier})"
             )
             return None, {}
 
